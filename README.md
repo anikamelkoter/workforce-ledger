@@ -1,55 +1,128 @@
-# Workforce Ledger: data and reporting pipeline
+# Workforce Ledger
 
-Northstar Media Group is fictional. All records are synthetic and generated locally. This package includes source generation, a working Python/SQLite validation and reporting pipeline, acceptance tests, and example outputs. An interactive browser dashboard is included. Native Power BI implementation is still pending.
+Prepared for the **2026 Representative Society of America Graduate Hiring Deficiency Case Study**
 
-## Start here
+[View the dashboard](https://anikamelkoter.github.io/workforce-ledger/)
 
-Download this repository as a ZIP, extract it, and open `index.html` in a browser. No server is needed. Explore region and department filters, employee search, CSV download, monthly trends, Finance reconciliation, and source-quality findings.
+## The question behind the project
 
-Run `python3 build_dashboard.py` to refresh the dashboard from a new pipeline run. GitHub Pages can serve `index.html` if Pages is configured for the root of `main`; committing the files does not enable hosting.
+Before a company decides where it needs to hire, it needs a reliable picture of who already works there. That sounds straightforward until HR and Finance produce different headcount numbers.
 
-Run `python3 pipeline.py` to build the database and reports. Run `python3 -m unittest discover -s tests -v` to run acceptance tests. Read `docs/PIPELINE.md` for instructions, actual results and limitations. The pipeline preserves source files and marks unresolved reporting as provisional.
+I focused this project on that reporting problem. Workforce Ledger brings employee records, organizational history, and Finance staffing data together so differences can be traced to individual records. The goal is to make the numbers explainable before using them to support hiring decisions.
 
-Open `data/raw/` to inspect five CSV source files. To reproduce them, run `python3 generate_data.py` from this folder with Python 3.10 or newer. No third-party dependencies or accounts are required. The script overwrites its generated files in this package, so keep edits elsewhere. The default seed is 42 and output is reproducible.
+The scope is workforce reporting. This version does not measure graduate hiring outcomes or establish that a graduate hiring shortage exists.
 
-The simulated reporting date is August 31, 2026. Finance uses August 25. HR extracts contain employment history, including future hires and recorded future departures. Date filtering is required. These are simulated exports, not actual SAP exports.
+## The case
 
-## Source contracts
+Northstar Media Group is a fictional media company with 1,200 synthetic employee and contractor records across the United States, United Kingdom, and India. Its departments are Content, Engineering, Sales, Finance, and HR.
 
-All CSVs are UTF-8 with headers. Identifiers are text, dates use YYYY-MM-DD, extraction timestamps use UTC, and an empty end date means open-ended. No salary, demographic, contact, or real personal data is included.
+The source files contain the kinds of inconsistencies that can make a staffing report misleading: duplicate people, missing departments, invalid employment dates, and reports pulled at different times. HR uses an August 31, 2026 reporting date. Finance uses August 25 and leaves out five otherwise eligible employees.
 
-| File | Grain and intended key | Fields |
-|---|---|---|
-| hr_people.csv | One export row; source_row_id unique, person_id intended unique | person_id joins assignments and Finance; display_name is synthetic; worker_type is Employee or Contractor; hire_date inclusive; termination_date exclusive; extracted_at is export timestamp |
-| hr_assignments.csv | One effective-dated assignment; assignment_id unique | person_id references people; department_id and region_id reference directories; valid_from inclusive, valid_to exclusive; extracted_at is export timestamp |
-| finance_staffing.csv | One person per reporting date; finance_row_id unique | person_id, department_id, region_id, reporting_date, extracted_at; contains employees only |
-| departments.csv | One department; department_id unique | department_name: Content, Engineering, Sales, Finance, HR |
-| regions.csv | One country-level reporting unit; region_id unique | country and region_name; US, UK and IN map to North America, Europe and Asia |
+All data is generated for this project. There are no real employee records or live SAP exports.
 
-Each person has one continuous employment spell and a fixed worker type. Rehires, simultaneous assignments and worker-type changes are deferred. Manager hierarchies are also deferred. Assignment intervals cover the employment spell exactly in the truth fixtures. Source files intentionally break some contracts.
+## How it works
 
-## Agreed business requirements
+Python imports the source files and checks their quality. SQLite preserves the original rows, separates unresolved employment records, and calculates historical headcount, monthly turnover, and the differences between HR and Finance. The browser dashboard presents those results with filters and record-level detail.
 
-Count distinct active employees for headcount, excluding contractors. Show total workforce separately. Active means hire_date <= reporting date and termination_date is blank or greater than reporting date. Resolve department and region using the same date against assignment intervals. Transfers do not count as hires or departures. Opening monthly headcount is the previous month's closing count. Turnover is employee departures divided by average opening and closing employee headcount, expressed as a percentage and not annualized. All business dates use the agreed company calendar; UTC timestamps describe extraction, not employment events.
+| Component | What it does |
+| --- | --- |
+| Python | Generates reproducible sample data, validates exports, and builds reporting outputs |
+| SQLite and SQL | Stores source records and calculates workforce metrics using effective dates |
+| JavaScript, HTML, and CSS | Displays workforce trends, reconciliation details, and data-quality findings |
+| Automated tests | Check reporting accuracy against known results and exercise failure cases |
 
-HR leaders need overall staffing and trends, regional HR needs its region, Finance needs a record-level reconciliation, and analysts need data-quality exceptions. Real regional enforcement belongs in the later reporting environment; this package provides no access controls.
+One decision matters throughout the project: a missing department should not make an otherwise valid employee disappear from the company-wide count. Those people remain countable, with their organization shown as Unknown. An invalid employment date is different because it can make active status impossible to establish. Those records are set aside and the report stays provisional.
 
-## Deliberate scenarios
+## What the sample run shows
 
-* Ten duplicate people are appended to HR with separate source-row IDs. Do not count export rows as people.
-* Five HR termination dates precede hire dates. Quarantine or resolve them through a documented correction workflow; do not silently substitute truth fixtures.
-* Five assignment department IDs are blank and one region is invalid.
-* Finance excludes contractors, uses an earlier cutoff, and omits five otherwise eligible employees.
-* Twenty known employees transfer from the US to the UK on August 15. A controlled cohort also contains ten UK hires and ten UK departures on August 20. Other generated employees have additional activity, so the full UK's net change is not necessarily twenty.
+The pipeline identifies all 21 planted data-quality issues:
 
-Missing organizational data need not erase a valid person from global headcount: keep organizational completeness separate from employment validity. Invalid employment dates can prevent a reliable active-status determination. The later pipeline should expose unresolved counts and avoid presenting quarantined-data totals as fully reconciled.
+- Ten duplicate person records with identical business fields.
+- Five termination dates that precede hire dates.
+- Five missing department assignments.
+- One invalid region.
 
-## Independent acceptance fixtures
+After excluding unresolved employment records, the August 31 report contains **963 validated employees**. Finance reports **962 employees** at its earlier cutoff.
 
-`tests/fixtures/` holds pre-corruption truth, injected issue locations, expected monthly metrics and a record-level reconciliation. This is the answer key for tests, not a production input or a hidden correction source. The expected reconciliation compares clean employee headcount at August 31 with Finance at August 25. It does not explain raw HR row counts or contractors; show those as separate bridges in the later dashboard.
+That one-person difference is only the net result. The reconciliation shows the individual additions, exclusions, and unresolved records behind it. Five employment records still require review, so the dashboard labels the results **provisional**.
 
-`summary.json` records actual generated counts. `data/manifest.json` records source hashes. The generator checks employment interval continuity, monthly headcount roll-forwards and reconciliation arithmetic. These checks validate the fixture design; they do not establish that a future validation pipeline works.
+The clean test data contains 967 active employees at August 31. That figure is an acceptance-test benchmark, not a correction silently applied to the report. The reporting pipeline never reads the answer keys.
 
-## Implemented reporting stage
+## Reporting definitions
 
-`pipeline.py` and `sql/` now implement staging, validation findings, quarantine, historical headcount, monthly turnover, and a record-level Finance reconciliation. `tests/test_pipeline.py` verifies the results against isolated truth fixtures and exercises failure cases. `build_dashboard.py` embeds pipeline results into the browser dashboard. Power BI remains a separate implementation step.
+| Measure | Definition |
+| --- | --- |
+| Employee headcount | Distinct active employees on the reporting date, excluding contractors |
+| Total workforce | Active employees and contractors combined |
+| Active status | Hire date is on or before the reporting date; termination date is blank or later |
+| Historical department and region | The assignment effective on the selected reporting date |
+| Monthly turnover | Employee departures divided by average opening and closing headcount, multiplied by 100 |
+| Internal transfer | An organizational change during continuous employment, rather than a new hire or departure |
+
+Termination dates represent the first day a person is no longer employed. Assignment start dates are inclusive and end dates are exclusive. Monthly turnover is not annualized, and partial final months are omitted from monthly reporting.
+
+## Explore the project
+
+The [live dashboard](https://anikamelkoter.github.io/workforce-ledger/) includes:
+
+- Workforce counts filtered by department and region.
+- Company-wide monthly headcount and turnover values.
+- Searchable employee and contractor records with CSV download.
+- A record-level HR and Finance reconciliation.
+- Data-quality findings with source references and explanations.
+
+Region and department filters apply to the workforce snapshot. The monthly trend and reconciliation remain company-wide. The page contains a generated reporting snapshot, so it does not query a live database.
+
+## Run locally
+
+Python 3.10 or newer is sufficient. No third-party Python packages are required.
+
+Download or clone the repository, then run these commands from its root folder:
+
+```bash
+# Validate the source files and generate a database and reports
+python3 pipeline.py
+
+# Run the acceptance tests
+python3 -m unittest discover -s tests -v
+
+# Refresh the browser dashboard from a new pipeline run
+python3 build_dashboard.py
+```
+
+On Windows, use `py` in place of `python3` if needed.
+
+Open `index.html` in a browser to view the dashboard locally. Viewing the existing dashboard does not require Python or a web server.
+
+Each pipeline run creates a separate folder under `output/`. Start with `summary.json`, then inspect `findings.csv` and `reconciliation.csv`. Generated databases and run folders are excluded from Git.
+
+To regenerate the synthetic source files:
+
+```bash
+python3 generate_data.py
+```
+
+The generator uses seed 42 and overwrites its generated source files and test fixtures. Keep any manually reviewed exports in a separate folder.
+
+## Repository guide
+
+| Path | Contents |
+| --- | --- |
+| `data/raw/` | Simulated HR exports, Finance staffing records, and organizational directories |
+| `data/manifest.json` | Hashes for the generated source files |
+| `generate_data.py` | Reproducible synthetic-data generator |
+| `pipeline.py` | Validation, database loading, and report generation |
+| `sql/` | Database schema and reporting queries |
+| `tests/` | Ten acceptance tests and isolated reference fixtures |
+| `build_dashboard.py` | Generates the dashboard from pipeline results |
+| `dashboard/template.html` | Dashboard layout and interaction code |
+| `index.html` | Generated dashboard published through GitHub Pages |
+| `docs/PIPELINE.md` | Detailed running instructions, correction process, and limitations |
+
+## Validation and remaining work
+
+The ten acceptance tests cover planted errors, preservation of source rows, clean-data reporting accuracy, employment and transfer boundaries, conflicting duplicates, overlapping assignments, malformed dates, invalid source structure, partial months, and repeatable runs.
+
+The current model assumes one continuous employment spell and a fixed worker type per person. Rehires, simultaneous assignments, manager hierarchies, and graduate-specific recruitment measures are outside its scope.
+
+Native Power BI reporting, live SAP or Snowflake connections, and enforced regional access controls are not implemented. Dashboard filters are display controls, not security restrictions. Browser visual testing remains pending; the embedded reporting data and JavaScript syntax have been checked.
