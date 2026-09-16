@@ -1,0 +1,85 @@
+{
+  "seed": 42,
+  "reporting_date": "2026-08-31",
+  "people": 1200,
+  "hr_source_rows": 1210,
+  "assignment_rows": 1387,
+  "deliberate_quality_issues": 21,
+  "canonical_employee_headcount": 967,
+  "finance_headcount": 962,
+  "canonical_total_workforce": 1070,
+  "reconciliation_delta": 5,
+  "finance_omitted_ids": [
+    "P1194",
+    "P1195",
+    "P1196",
+    "P1198",
+    "P1199"
+  ],
+  "monthly": [
+    {
+      "month": "2026-01",
+      "opening_headcount": 992,
+      "hires": 0,
+      "departures": 3,
+      "closing_headcount": 989,
+      "turnover_pct": 0.302877
+    },
+    {
+      "month": "2026-02",
+      "opening_headcount": 989,
+      "hires": 0,
+      "departures": 4,
+      "closing_headcount": 985,
+      "turnover_pct": 0.405268
+    },
+    {
+      "month": "2026-03",
+      "opening_headcount": 985,
+      "hires": 0,
+      "departures": 2,
+      "closing_headcount": 983,
+      "turnover_pct": 0.203252
+    },
+    {
+      "month": "2026-04",
+      "opening_headcount": 983,
+      "hires": 0,
+      "departures": 4,
+      "closing_headcount": 979,
+      "turnover_pct": 0.407747
+    },
+    {
+      "month": "2026-05",
+      "opening_headcount": 979,
+      "hires": 0,
+      "departures": 3,
+      "closing_headcount": 976,
+      "turnover_pct": 0.306905
+    },
+    {
+      "month": "2026-06",
+      "opening_headcount": 976,
+      "hires": 0,
+      "departures": 3,
+      "closing_headcount": 973,
+      "turnover_pct": 0.30785
+    },
+    {
+      "month": "2026-07",
+      "opening_headcount": 973,
+      "hires": 0,
+      "departures": 4,
+      "closing_headcount": 969,
+      "turnover_pct": 0.411946
+    },
+    {
+      "month": "2026-08",
+      "opening_headcount": 969,
+      "hires": 11,
+      "departures": 13,
+      "closing_headcount": 967,
+      "turnover_pct": 1.342975
+    }
+  ]
+}

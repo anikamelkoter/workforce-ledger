@@ -1,0 +1,8 @@
+person_id,reason,finance_count,canonical_count,delta
+P0041,cutoff_difference,0,1,1
+P0042,cutoff_difference,1,0,-1
+P1194,missing_finance_record,0,1,1
+P1195,missing_finance_record,0,1,1
+P1196,missing_finance_record,0,1,1
+P1198,missing_finance_record,0,1,1
+P1199,missing_finance_record,0,1,1

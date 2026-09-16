@@ -1,0 +1,15 @@
+test_all_planted_issues_found_and_raw_preserved (test_pipeline.PipelineTests.test_all_planted_issues_found_and_raw_preserved) ... ok
+test_bad_schema_blocks_run (test_pipeline.PipelineTests.test_bad_schema_blocks_run) ... ok
+test_clean_metrics_match_independent_fixtures (test_pipeline.PipelineTests.test_clean_metrics_match_independent_fixtures) ... ok
+test_conflicting_duplicate_is_not_arbitrarily_resolved (test_pipeline.PipelineTests.test_conflicting_duplicate_is_not_arbitrarily_resolved) ... ok
+test_dirty_reports_are_provisional_and_bridge_balances (test_pipeline.PipelineTests.test_dirty_reports_are_provisional_and_bridge_balances) ... ok
+test_malformed_date_is_quarantined (test_pipeline.PipelineTests.test_malformed_date_is_quarantined) ... ok
+test_overlapping_assignments_do_not_double_count (test_pipeline.PipelineTests.test_overlapping_assignments_do_not_double_count) ... ok
+test_partial_month_is_not_reported_as_complete (test_pipeline.PipelineTests.test_partial_month_is_not_reported_as_complete) ... ok
+test_run_is_repeatable_and_does_not_change_sources (test_pipeline.PipelineTests.test_run_is_repeatable_and_does_not_change_sources) ... ok
+test_transfer_and_employment_date_boundaries (test_pipeline.PipelineTests.test_transfer_and_employment_date_boundaries) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.425s
+
+OK

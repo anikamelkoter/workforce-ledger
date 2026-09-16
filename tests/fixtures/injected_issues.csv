@@ -1,0 +1,22 @@
+file,record_id,issue,field,observed,expected
+hr_people.csv,HR00051,termination_before_hire,termination_date,2022-01-01,
+hr_people.csv,HR00052,termination_before_hire,termination_date,2022-01-01,
+hr_people.csv,HR00053,termination_before_hire,termination_date,2022-01-01,
+hr_people.csv,HR00054,termination_before_hire,termination_date,2022-01-01,2026-07-29
+hr_people.csv,HR00055,termination_before_hire,termination_date,2022-01-01,
+hr_assignments.csv,A00061,missing_department,department_id,,D05
+hr_assignments.csv,A00062,missing_department,department_id,,D04
+hr_assignments.csv,A00063,missing_department,department_id,,D02
+hr_assignments.csv,A00064,missing_department,department_id,,D03
+hr_assignments.csv,A00065,missing_department,department_id,,D01
+hr_assignments.csv,A00071,unknown_region,region_id,ZZ,US
+hr_people.csv,HR01201,duplicate_person,person_id,P0101,one row per person
+hr_people.csv,HR01202,duplicate_person,person_id,P0102,one row per person
+hr_people.csv,HR01203,duplicate_person,person_id,P0103,one row per person
+hr_people.csv,HR01204,duplicate_person,person_id,P0104,one row per person
+hr_people.csv,HR01205,duplicate_person,person_id,P0105,one row per person
+hr_people.csv,HR01206,duplicate_person,person_id,P0106,one row per person
+hr_people.csv,HR01207,duplicate_person,person_id,P0107,one row per person
+hr_people.csv,HR01208,duplicate_person,person_id,P0108,one row per person
+hr_people.csv,HR01209,duplicate_person,person_id,P0109,one row per person
+hr_people.csv,HR01210,duplicate_person,person_id,P0110,one row per person

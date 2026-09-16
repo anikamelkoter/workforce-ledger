@@ -1,0 +1,10 @@
+{
+  "seed": 42,
+  "sha256": {
+    "data/raw/departments.csv": "abee9d26680a175e9891fea759188c6a93c97bfe89f6bc270cc2ad0f298b2b59",
+    "data/raw/finance_staffing.csv": "0e4f9fc3e1ee369d7b19a3ece88c6ae2bebffa1867369b8dcadaa3cf5c25fc25",
+    "data/raw/hr_assignments.csv": "b6cb9c349711d46ea36401b74c90f65106599719660cadb96e55718eeef09e5d",
+    "data/raw/hr_people.csv": "1019430ca7fab440c0d739b23c1207c25b8c26a62e0c26ead473b5ae61afe9a8",
+    "data/raw/regions.csv": "1af02890d03ead38f3ef60d51d3e7fe20342cfd8591d11eae3772890f4fbdfec"
+  }
+}
