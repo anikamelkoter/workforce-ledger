@@ -1,10 +1,10 @@
-# Workforce Ledger
+# WORKFORCE LEDGER
 
 Prepared for the **2026 Representative Society of America Graduate Hiring Deficiency Case Study**
 
 [View the dashboard](https://anikamelkoter.github.io/workforce-ledger/)
 
-## The question behind the project
+## THE QUESTION BEHIND THE PROJECT
 
 Before a company decides where it needs to hire, it needs a reliable picture of who already works there. That sounds straightforward until HR and Finance produce different headcount numbers.
 
@@ -12,7 +12,7 @@ I focused this project on that reporting problem. Workforce Ledger brings employ
 
 The scope is workforce reporting. This version does not measure graduate hiring outcomes or establish that a graduate hiring shortage exists.
 
-## The case
+## THE CASE
 
 Northstar Media Group is a fictional media company with 1,200 synthetic employee and contractor records across the United States, United Kingdom, and India. Its departments are Content, Engineering, Sales, Finance, and HR.
 
@@ -20,7 +20,7 @@ The source files contain the kinds of inconsistencies that can make a staffing r
 
 All data is generated for this project. There are no real employee records or live SAP exports.
 
-## How it works
+## HOW IT WORKS
 
 Python imports the source files and checks their quality. SQLite preserves the original rows, separates unresolved employment records, and calculates historical headcount, monthly turnover, and the differences between HR and Finance. The browser dashboard presents those results with filters and record-level detail.
 
